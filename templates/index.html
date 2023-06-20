@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Converter</title>
+</head>
+<body>
+    <h1>Temperature Converter</h1>
+    <form action="/convert" method="POST">
+        <label for="value">Enter the numerical value:</label>
+        <input type="text" name="value" id="value" required>
+        <br>
+        <label for="from_unit">Enter the input unit of measure:</label>
+        <input type="text" name="from_unit" id="from_unit" required>
+        <br>
+        <label for="to_unit">Enter the target unit of measure:</label>
+        <input type="text" name="to_unit" id="to_unit" required>
+        <br>
+        <label for="student_response">Enter the student's numeric response:</label>
+        <input type="text" name="student_response" id="student_response" required>
+        <br>
+        <input type="submit" value="Convert">
+    </form>
+</body>
+</html>
