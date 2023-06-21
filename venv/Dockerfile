@@ -1,21 +1,30 @@
-# Use the official Python base image
-FROM python:3.9-slim
+name: Deploy to Google Cloud
 
-# Set the working directory in the container
-WORKDIR /app
+on:
+  push:
+    branches:
+      - test
 
-# Copy the requirements file and install the dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-# Copy the application code to the container
-COPY . .
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-# Set the environment variable for Flask
-ENV FLASK_APP=app.py
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          version: 'latest'
+          project_id: tempconv1-389923
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
 
-# Expose the port that the application will run on
-EXPOSE 8080
+      - name: Configure Docker
+        uses: docker/setup-docker@v1
 
-# Start the Flask application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
+      - name: Build and deploy
+        run: |
+          gcloud builds submit --tag gcr.io/tempconv1-389923/flask-app
+          gcloud run deploy --image gcr.io/tempconv1-389923/tc --platform managed --region us-central1 --allow-unauthenticated --project your-project-id
