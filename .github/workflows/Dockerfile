@@ -1,17 +1,33 @@
-# Use the official Python base image
-FROM python:3.9
+name: Deploy to Google Cloud
 
-# Set the working directory in the container
-WORKDIR /app
+on:
+  push:
+    branches:
+      - test
 
-# Copy the requirements file to the working directory
-COPY requirements.txt .
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-# Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-# Copy the application code to the working directory
-COPY . .
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          version: 'latest'
+          project_id: your-project-id
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
 
-# Set the command to run the Flask application
-CMD ["python", "app.py"]
+      - name: Configure Docker
+        uses: docker/setup-docker@v1
+
+      - name: Build and deploy
+        
+        run: |
+             docker build -t flask-app.
+             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+             docker tag flask-app nagversion/9CodeReview:flask-app
+             docker push nagversion/9CodeReview:flask-app
