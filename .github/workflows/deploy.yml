@@ -16,15 +16,9 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/auth@v0.5.0
         with:
-          credentials_json: ${{ secrets.GCLOUD_AUTH }}
-          project_id: tempconv1-389923
-
-      - name: Configure Docker
-        uses: docker/build-push-action@v2
-
-      - name: Build and deploy
-        run: |
-          docker build -t flask-app .
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker tag flask-app nagversion/9CodeReview:flask-app
-          docker push nagversion/9CodeReview:flask-app
+          credentials_json: |
+            {
+              "type": "service_account",
+              "project_id": "tempconv1-389923",
+              "private_key_id": "e4ffa96d77d2988d3381e51a6d6ebfbb39b2e731",
+              "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQDwM1akaaDApWmO\nFZhWKpaPgPE2jN8n5IybAMRTjs4Dvvi6HcQQ4km5UtEWVu5LOlKT5jOhbQtNFHZ0\nUhUQlCGljAU0vxCp3GJsXsDUFG3fvD6Kxo3n9lDFvtkYXIOOi/20Sq7vjhJTNV9z\n02OefWNJkjJ0ux6KFDAKqaqIx/jAR90vwEL8TNPf8gykAajvbO5945oaNM3b2juk\nZh6KQvhmXN3dcmDjcZfrOCk1y7VpE05jZ5pLQBwRx+yZeg9m2uFytSsvv48ks1XA\nQa8k85CGv+kIB7jR4OIY+9FH3ixWQDpzHG9/4GGYGFjJ1wGE7vf/YAB+x6njADrB\nrbi6h5CHAgMBAAECgf9qflhrjGk5AB1MYUao7TjTZteK1+oYRbwQ/MYORcIQ5xpf\nadMDqVAGWjFZNjFwKOtzpxw89ZuNEQVzjPDJ6OMCApJMUGmS5aK9aUUUwfn0uAEC\nhg
