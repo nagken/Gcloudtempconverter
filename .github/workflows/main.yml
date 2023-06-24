@@ -20,9 +20,10 @@ jobs:
 
       - name: Configure Docker
         run: |
-          echo ${{ secrets.GCP_SA_KEY }} | base64 --decode > ${HOME}/gcp-key.json
-          gcloud auth activate-service-account --key-file=${HOME}/gcp-key.json --project=tempconv1-389923
-          gcloud auth configure-docker
+            echo ${{ secrets.GCP_SA_KEY }} | base64 --decode > ${HOME}/gcp-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcp-key.json
+            gcloud auth configure-docker --quiet
+        
 
       - name: Build and Push Docker image
         run: |
