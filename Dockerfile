@@ -1,6 +1,9 @@
 # Use the official Python base image
 FROM python:3.9
 
+# Add your Dockerfile instructions here
+EXPOSE 8080
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -13,5 +16,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code to the working directory
 COPY . .
 
-# Set the command to run the Flask application
-CMD ["python", "app.py"]
+# Set the command to run the Flask application using Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "main:app"]
