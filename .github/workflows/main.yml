@@ -16,12 +16,12 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY_BASE64 }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Configure Docker
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > ${HOME}/gcp-key.json
-          gcloud auth activate-service-account --key-file=${HOME}/gcp-key.json
+          echo ${{ secrets.GCP_SA_KEY }} > ${HOME}/gcp-key.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcp-key.json --project=tempconv1-389923
           gcloud auth configure-docker
 
       - name: Build and Push Docker image
