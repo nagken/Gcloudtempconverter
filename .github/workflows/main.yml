@@ -28,4 +28,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: gcr.io/tempconv1-389923/ghapp:${{ github.sha }}
+          tags: gcr.io/tempconv1-389923/ghapp:latest
+
