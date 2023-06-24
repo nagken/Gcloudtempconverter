@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - test
+      - main
 
 jobs:
   build-and-push:
@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: gcr.io/${{ secrets.GCR_PROJECT_ID }}/ghapp:${{ github.sha }}
+          tags: gcr.io/tempconv1-389923/ghapp:${{ github.sha }}
