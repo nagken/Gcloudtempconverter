@@ -59,4 +59,5 @@ jobs:
          echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=tempconv1-389923)"
       - name: Display Deployment URL
         run: |
-          echo "${{ steps.get-url.outputs.url }}"
+         echo "<script>window.open('${{ steps.get-url.outputs.url }}', '_blank')</script>"
+
