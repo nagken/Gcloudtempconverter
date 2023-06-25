@@ -61,7 +61,13 @@ jobs:
         id: get-url
         run: |
           echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=tempconv1-389923)"
+          echo "::set-output name=url::https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=tempconv1-389923)"
 
-      - name: Open URL in New Tab
+  open-url:
+    name: Open Deployment URL in New Window
+    needs: get-deployment-url
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open URL in New Window
         run: |
-          echo "<script>window.open('${{ steps.get-url.outputs.url }}', '_blank')</script>"
+          echo "<script>window.open('${{ needs.get-deployment-url.outputs.url }}', '_blank')</script>"
