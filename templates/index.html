@@ -49,13 +49,24 @@
         <label for="value">Enter the numerical value:</label>
         <input type="text" name="value" id="value" required>
         <br>
-        <label for="unit">Select the unit of measure:</label>
-        <select name="unit" id="unit" required>
+        <label for="from_unit">Select the input unit of measure:</label>
+        <select name="from_unit" id="from_unit" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
             <option value="Kelvin">Kelvin</option>
             <option value="Celsius">Celsius</option>
             <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
+        </select>
+        <br>
+        <label for="to_unit">Select the target unit of measure:</label>
+        <select name="to_unit" id="to_unit" required>
+            <option value="">- Select Unit -</option>
+            <option value="Fahrenheit">Fahrenheit</option>
+            <option value="Kelvin">Kelvin</option>
+            <option value="Celsius">Celsius</option>
+            <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
         </select>
         <br>
         <label for="student_response">Enter the student's numeric response:</label>
