@@ -40,6 +40,7 @@ jobs:
         run: |
           docker pull gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
           gcloud run deploy ghtempconv1 --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region us-central1 --allow-unauthenticated
+
   get-deployment-url:
     name: Get Cloud Run Deployment URL
     needs: build-push-gcr
@@ -57,6 +58,7 @@ jobs:
         id: get-url
         run: |
           echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=tempconv1-389923)"
-      - name: Display Deployment URL
+
+      - name: Open URL in New Tab
         run: |
           echo "<script>window.open('${{ steps.get-url.outputs.url }}', '_blank')</script>"
