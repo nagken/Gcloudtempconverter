@@ -19,17 +19,15 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-          project_id: $PROJECT_ID
+          project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
 
       - name: Build Docker Image
         run: |
           docker build -t $IMAGE_NAME:latest .
-
       - name: Configure Docker Client
         run: |
           gcloud auth configure-docker --quiet
-
       - name: Push Docker image to Container Registry (GCR)
         env:
           GIT_TAG: v0.1.0
@@ -38,12 +36,10 @@ jobs:
           docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
           docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
           docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
-
       - name: Deploy to Cloud Run using new key
         run: |
           docker pull gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
           gcloud run deploy ghtempconv1 --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region us-central1 --allow-unauthenticated
-
   get-deployment-url:
     name: Get Cloud Run Deployment URL
     needs: build-push-gcr
@@ -54,19 +50,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-          project_id: tempconv1-389923
+          project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
-
-    
 
       - name: Get Deployment URL
         id: get-url
         run: |
-         echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=tempconv1-389923)"
-
-
-
-
-      - name: Display Deployment URL1
+         echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project=${{ env.PROJECT_ID }})"
+      - name: Display Deployment URL
         run: |
           echo "${{ steps.get-url.outputs.url }}"
