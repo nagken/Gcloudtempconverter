@@ -39,7 +39,7 @@ jobs:
           docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
           docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-      - name: Deploy to Cloud Run
+      - name: Deploy to Cloud Run using new key
         run: |
           gcloud run deploy tempapp32 --image gcr.io/$PROJECT_ID/$IMAGE_NAME:${{ github.sha }} --platform managed --region us-central1 --allow-unauthenticated
   
