@@ -54,7 +54,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-          project_id: ${{ env.PROJECT_ID }}
+          project_id: empconv1-389923
           export_default_credentials: true
 
     
