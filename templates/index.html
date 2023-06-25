@@ -69,6 +69,11 @@
             <option value="Custom">Custom</option>
         </select>
         <br>
+        <div id="custom_input" style="display: none;">
+            <label for="custom_unit">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_unit" id="custom_unit">
+        </div>
+        <br>
         <label for="to_unit">Select the target unit of measure:</label>
         <select name="to_unit" id="to_unit" required>
             <option value="">- Select Unit -</option>
@@ -78,11 +83,6 @@
             <option value="Rankine">Rankine</option>
             <option value="Custom">Custom</option>
         </select>
-        <br>
-        <div id="custom_input" style="display: none;">
-            <label for="custom_unit">Enter a custom unit of measure:</label>
-            <input type="text" name="custom_unit" id="custom_unit">
-        </div>
         <br>
         <label for="student_response">Enter the student's numeric response:</label>
         <input type="text" name="student_response" id="student_response" required>
