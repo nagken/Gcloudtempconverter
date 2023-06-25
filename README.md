@@ -39,19 +39,14 @@ You will see the CI/CD workflow running. Wait for it to complete.
 Deployment URL:
 
 Once the workflow has completed successfully, go to the workflow run.
-
 In the "Deploy to Cloud Run" step, find the output logs.
-
-Look for the line starting with "Cloud Run Deployment URL:". The URL will be provide the URL to test the challenge -Cloud Run Deployment URL: https://https://ghtempconv1-3lkcs5aqra-uc.a.run.app  you can directly test here and its running on cloud run of my GCP account 
-
+Look for the line starting with "Cloud Run Deployment URL:". The URL will be provided in the logs.
 Alternatively, if you want to use your own secret key and GCP project ID:
 
 Insert your secret key JSON content as a secret with the name GCP_SERVICE_ACCOUNT_KEY in the repository settings.
-Update the workflow configuration file (main1.yaml) and replace PROJECT_ID with your GCP project ID.
+Update the workflow configuration file (main.yaml) and replace PROJECT_ID with your GCP project ID.
 Commit and push the changes to the repository.
 Follow the previous steps to trigger the workflow and obtain the deployment URL.
-Now I have successfully run the CI/CD pipeline and obtained the deployment URL for testing the Temperature Converter project. You can use the provided URL to interact with the deployed application.
-
 Troubleshooting
 If you encounter any issues during the CI/CD pipeline execution or have questions, please feel free to reach out for support.
 
@@ -62,6 +57,6 @@ License
 This project is licensed under the MIT License. For more details, see the LICENSE file.
 
 Contact
-If you have any questions or need assistance, please feel free to contact me at [nagversion@gmail.com].
+If you have any questions or need assistance, please feel free to contact me at nagversion@gmail.com.
 
 That's it! Customize this template to fit your project's specific instructions and details, and you'll have a comprehensive README.md file to guide users in running the CI/CD pipeline and obtaining the deployment URL for testing your project on GitHub.
