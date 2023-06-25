@@ -20,7 +20,8 @@
             display: block;
             margin-bottom: 10px;
         }
-        input[type="text"] {
+        input[type="text"],
+        select {
             width: 100%;
             padding: 8px;
             font-size: 16px;
@@ -65,7 +66,12 @@
         </select>
         <br>
         <label for="optional_input">Optional Input:</label>
-        <input type="text" name="optional_input" id="optional_input">
+        <select name="optional_input" id="optional_input">
+            <option value="">None</option>
+            <option value="Custom 1">Custom 1</option>
+            <option value="Custom 2">Custom 2</option>
+            <option value="Custom 3">Custom 3</option>
+        </select>
         <br>
         <label for="student_response">Enter the student's numeric response:</label>
         <input type="text" name="student_response" id="student_response" required>
