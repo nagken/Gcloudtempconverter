@@ -22,18 +22,36 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            transition: transform 0.3s;
+        }
+        .result-container:hover {
+            transform: scale(1.05);
+        }
+        .result-container p {
+            color: #333;
+        }
+        .result-container .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .result-container .value {
+            font-weight: bold;
+            color: #0088cc;
         }
     </style>
 </head>
 <body>
     <div class="result-container">
-        <h1>Temperature Conversion Result</h1>
-        <p>Input Numerical Value: {{ value }}</p>
-        <p>Input Unit of Measure: {{ from_unit }}</p>
-        <p>Target Unit of Measure: {{ to_unit }}</p>
-        <p>Student Response: {{ student_response }}</p>
-        <p>Grading Result: {{ grading_result }}</p>
-        <p>Converted Value: {{ converted_value }}</p>
+        <h1 class="title">Temperature Conversion Result</h1>
+        <p>Input Numerical Value: <span class="value">{{ value }}</span></p>
+        <p>Input Unit of Measure: <span class="value">{{ from_unit }}</span></p>
+        <p>Target Unit of Measure: <span class="value">{{ to_unit }}</span></p>
+        <p>Student Response: <span class="value">{{ student_response }}</span></p>
+        <p>Grading Result: <span class="value">{{ grading_result }}</span></p>
+        <p>Converted Value: <span class="value">{{ converted_value }}</span></p>
     </div>
 </body>
 </html>
