@@ -60,7 +60,8 @@ jobs:
       - name: Get Deployment URL
         id: get-url
         run: |
-         echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)' --project $PROJECT_ID)"
+         echo "Cloud Run Deployment URL: https://$(gcloud run services describe ghtempconv1 --platform managed --region us-central1 --format 'value(status.url)') --project=$PROJECT_ID)"
+
 
       - name: Display Deployment URL
         run: |
