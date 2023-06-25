@@ -67,6 +67,6 @@ jobs:
 
 
 
-      - name: Display Deployment URL
+      - name: Display Deployment URL1
         run: |
           echo "${{ steps.get-url.outputs.url }}"
