@@ -43,6 +43,15 @@
         }
     </style>
     <script>
+        function handleUnitSelection(unit) {
+            const customInput = document.getElementById("custom_input");
+            if (unit === "Custom") {
+                customInput.style.display = "block";
+            } else {
+                customInput.style.display = "none";
+            }
+        }
+
         function handleTargetUnitSelection(unit) {
             const customTargetInput = document.getElementById("custom_target_input");
             if (unit === "Custom") {
@@ -68,6 +77,10 @@
             <option value="Rankine">Rankine</option>
             <option value="Custom">Custom</option>
         </select>
+        <div id="custom_input" style="display: none;">
+            <label for="custom_unit">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_unit" id="custom_unit">
+        </div>
         <br>
         <label for="to_unit">Select the target unit of measure:</label>
         <select name="to_unit" id="to_unit" onchange="handleTargetUnitSelection(this.value)" required>
@@ -78,7 +91,6 @@
             <option value="Rankine">Rankine</option>
             <option value="Custom">Custom</option>
         </select>
-        <br>
         <div id="custom_target_input" style="display: none;">
             <label for="custom_target_unit">Enter a custom unit of measure:</label>
             <input type="text" name="custom_target_unit" id="custom_target_unit">
