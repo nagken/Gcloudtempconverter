@@ -2,14 +2,38 @@
 <html>
 <head>
     <title>Temperature Conversion Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .result-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Temperature Conversion Result</h1>
-    <p>Input Numerical Value: {{ value }}</p>
-    <p>Input Unit of Measure: {{ from_unit }}</p>
-    <p>Target Unit of Measure: {{ to_unit }}</p>
-    <p>Student Response: {{ student_response }}</p>
-    <p>Grading Result: {{ grading_result }}</p>
-    <p>Converted Value: {{ converted_value }}</p>
+    <div class="result-container">
+        <h1>Temperature Conversion Result</h1>
+        <p>Input Numerical Value: {{ value }}</p>
+        <p>Input Unit of Measure: {{ from_unit }}</p>
+        <p>Target Unit of Measure: {{ to_unit }}</p>
+        <p>Student Response: {{ student_response }}</p>
+        <p>Grading Result: {{ grading_result }}</p>
+        <p>Converted Value: {{ converted_value }}</p>
+    </div>
 </body>
 </html>
