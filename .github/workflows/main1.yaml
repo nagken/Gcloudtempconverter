@@ -41,5 +41,5 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy SERVICE --image gcr.io/$PROJECT_ID/$IMAGE_NAME:${{ github.sha }} --platform managed --region us-central1 --allow-unauthenticated
+          gcloud run deploy tempapp32 --image gcr.io/$PROJECT_ID/$IMAGE_NAME:${{ github.sha }} --platform managed --region us-central1 --allow-unauthenticated
   
