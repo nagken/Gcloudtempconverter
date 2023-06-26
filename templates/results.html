@@ -11,6 +11,8 @@
         h1 {
             text-align: center;
             margin-top: 50px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
         p {
             margin-bottom: 10px;
@@ -22,13 +24,16 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .result-container:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .result-container p {
             color: #333;
+            font-size: 16px;
         }
         .result-container .title {
             font-size: 24px;
