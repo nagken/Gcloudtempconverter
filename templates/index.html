@@ -7,7 +7,25 @@
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
             padding: 20px;
+            transition: background-color 0.5s;
         }
+
+        .sunny {
+            background-color: #FED55D;
+        }
+
+        .cloudy {
+            background-color: #D4D4D4;
+        }
+
+        .rainy {
+            background-color: #7DB9DE;
+        }
+
+        .snowy {
+            background-color: #FFFFFF;
+        }
+
         h1 {
             text-align: center;
             margin-top: 50px;
@@ -15,21 +33,25 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             transition: color 0.3s;
         }
+
         h1:hover {
             color: #45a049;
         }
+
         form {
             max-width: 400px;
             margin: 0 auto;
             text-align: center;
             margin-top: 30px;
         }
+
         label {
             display: block;
             margin-bottom: 10px;
             color: #666;
             transition: color 0.3s;
         }
+
         input[type="text"],
         select {
             width: 100%;
@@ -41,12 +63,14 @@
             transition: box-shadow 0.3s, background-color 0.3s;
             background-color: #fff;
         }
+
         input[type="text"]:focus,
         select:focus {
             outline: none;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
             background-color: #f5f5f5;
         }
+
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
@@ -57,6 +81,7 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
+
         input[type="submit"]:hover {
             background-color: #45a049;
         }
@@ -77,6 +102,43 @@
                 customTargetInput.style.display = "block";
             } else {
                 customTargetInput.style.display = "none";
+            }
+        }
+
+        function convertTemperature() {
+            const value = parseFloat(document.getElementById("value").value);
+            const fromUnit = document.getElementById("from_unit").value;
+            const toUnit = document.getElementById("to_unit").value;
+            let convertedValue;
+
+            if (fromUnit === "Kelvin" && toUnit === "Kelvin") {
+                // No conversion needed, keep the value the same
+                convertedValue = value;
+            } else {
+                // Perform the conversion based on the selected units
+                // Add your conversion logic here
+                // ...
+            }
+
+            // Display the converted value
+            document.getElementById("converted_value").textContent = convertedValue;
+
+            // Update weather effects based on the converted value
+            updateWeatherEffects(convertedValue);
+        }
+
+        function updateWeatherEffects(convertedValue) {
+            const body = document.body;
+            body.classList.remove("sunny", "cloudy", "rainy", "snowy");
+
+            if (convertedValue >= 30) {
+                body.classList.add("sunny");
+            } else if (convertedValue >= 20) {
+                body.classList.add("cloudy");
+            } else if (convertedValue >= 10) {
+                body.classList.add("rainy");
+            } else {
+                body.classList.add("snowy");
             }
         }
     </script>
@@ -118,7 +180,11 @@
         <label for="student_response">Enter the student's numeric response:</label>
         <input type="text" name="student_response" id="student_response" required>
         <br>
-        <input type="submit" value="Convert">
+        <input type="submit" value="Convert" onclick="convertTemperature()">
     </form>
+    <div id="result">
+        <h2>Conversion Result</h2>
+        <p>Converted Value: <span id="converted_value"></span></p>
+    </div>
 </body>
 </html>
