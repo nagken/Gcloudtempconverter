@@ -3,6 +3,7 @@
 <head>
     <title>Temperature Conversion Result</title>
     <style>
+        /* Your existing CSS styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -10,20 +11,23 @@
             transition: background-color 0.5s;
         }
 
-        .cloudy {
-            background-color: #D4D4D4;
+        /* Weather effects styles */
+        .weather-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
         }
 
-        .rainy {
-            background-color: #7DB9DE;
-        }
-
-        .summer {
-            background-color: #FFCC55;
-        }
-
-        .snowy {
-            background-color: #FFFFFF;
+        .result-container {
+            /* Existing styles for the result container */
         }
 
         h1 {
@@ -74,36 +78,24 @@
         }
 
         @keyframes celebration {
-            0% { background-color: #D4D4D4; }
-            25% { background-color: #7DB9DE; }
-            50% { background-color: #FFCC55; }
-            75% { background-color: #FFFFFF; }
-            100% { background-color: #D4D4D4; }
+            0% { background-color: #ff5577; }
+            25% { background-color: #55aaff; }
+            50% { background-color: #ffcc55; }
+            75% { background-color: #88ff55; }
+            100% { background-color: #ff55aa; }
         }
+
+        /* Other CSS styles */
+
     </style>
-    <script>
-        function updateWeatherEffect() {
-            const body = document.body;
-            body.classList.remove("cloudy", "rainy", "summer", "snowy");
-
-            // Add your logic to determine the weather effect based on the grading result
-            // You can access the grading result value using JavaScript
-
-            const gradingResult = "{{ grading_result }}"; // Replace with the actual grading result value
-
-            if (gradingResult === "Cloudy") {
-                body.classList.add("cloudy");
-            } else if (gradingResult === "Rainy") {
-                body.classList.add("rainy");
-            } else if (gradingResult === "Summer") {
-                body.classList.add("summer");
-            } else if (gradingResult === "Snowy") {
-                body.classList.add("snowy");
-            }
-        }
-    </script>
 </head>
-<body onload="updateWeatherEffect()">
+<body>
+    <!-- Weather effects -->
+    <div class="weather-effect sunny-effect" id="weather-effect-clear"></div>
+    <div class="weather-effect cloudy-effect" id="weather-effect-partly-cloudy"></div>
+    <div class="weather-effect rainy-effect" id="weather-effect-rain"></div>
+    <div class="weather-effect snowy-effect" id="weather-effect-snow"></div>
+
     <div class="result-container">
         <h1 class="title">Temperature Conversion Result</h1>
         <p>Input Numerical Value: <span class="value">{{ value }}</span></p>
