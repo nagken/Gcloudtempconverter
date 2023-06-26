@@ -26,10 +26,12 @@
             border-radius: 4px;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: celebration 2s infinite;
         }
         .result-container:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation-play-state: paused;
         }
         .result-container p {
             color: #333;
@@ -45,6 +47,14 @@
         .result-container .value {
             font-weight: bold;
             color: #0088cc;
+        }
+        
+        @keyframes celebration {
+            0% { background-color: #ff5577; }
+            25% { background-color: #55aaff; }
+            50% { background-color: #ffcc55; }
+            75% { background-color: #88ff55; }
+            100% { background-color: #ff55aa; }
         }
     </style>
 </head>

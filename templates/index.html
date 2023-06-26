@@ -11,8 +11,12 @@
         h1 {
             text-align: center;
             margin-top: 50px;
-            color: #333;
+            color: #4CAF50;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: color 0.3s;
+        }
+        h1:hover {
+            color: #45a049;
         }
         form {
             max-width: 400px;
@@ -24,6 +28,7 @@
             display: block;
             margin-bottom: 10px;
             color: #666;
+            transition: color 0.3s;
         }
         input[type="text"],
         select {
@@ -77,12 +82,12 @@
     </script>
 </head>
 <body>
-    <h1 style="color: #4CAF50;">Temperature Converter</h1>
+    <h1>Temperature Converter</h1>
     <form action="/convert" method="POST">
-        <label for="value" style="color: #333;">Enter the numerical value:</label>
+        <label for="value">Enter the numerical value:</label>
         <input type="text" name="value" id="value" required>
         <br>
-        <label for="from_unit" style="color: #333;">Select the input unit of measure:</label>
+        <label for="from_unit">Select the input unit of measure:</label>
         <select name="from_unit" id="from_unit" onchange="handleUnitSelection(this.value)" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
@@ -92,11 +97,11 @@
             <option value="Custom">Custom</option>
         </select>
         <div id="custom_input" style="display: none;">
-            <label for="custom_unit" style="color: #333;">Enter a custom unit of measure:</label>
+            <label for="custom_unit">Enter a custom unit of measure:</label>
             <input type="text" name="custom_unit" id="custom_unit">
         </div>
         <br>
-        <label for="to_unit" style="color: #333;">Select the target unit of measure:</label>
+        <label for="to_unit">Select the target unit of measure:</label>
         <select name="to_unit" id="to_unit" onchange="handleTargetUnitSelection(this.value)" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
@@ -106,11 +111,11 @@
             <option value="Custom">Custom</option>
         </select>
         <div id="custom_target_input" style="display: none;">
-            <label for="custom_target_unit" style="color: #333;">Enter a custom unit of measure:</label>
+            <label for="custom_target_unit">Enter a custom unit of measure:</label>
             <input type="text" name="custom_target_unit" id="custom_target_unit">
         </div>
         <br>
-        <label for="student_response" style="color: #333;">Enter the student's numeric response:</label>
+        <label for="student_response">Enter the student's numeric response:</label>
         <input type="text" name="student_response" id="student_response" required>
         <br>
         <input type="submit" value="Convert">
