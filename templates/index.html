@@ -26,65 +26,212 @@
             background-position: center;
         }
 
-        h1 {
+        .sunny-effect {
+            background-image: url(path/to/sunny.jpg);
+        }
+
+        .cloudy-effect {
+            background-image: url(path/to/cloudy.jpg);
+        }
+
+        .rainy-effect {
+            background-image: url(path/to/rainy.jpg);
+        }
+
+        .snowy-effect {
+            background-image: url(path/to/snowy.jpg);
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
             text-align: center;
-            margin-top: 50px;
-            color: #4CAF50;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
             transition: color 0.3s;
         }
 
-        h1:hover {
-            color: #45a049;
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s, background-color 0.3s;
+            background-color: #fff;
         }
 
-        /* Other CSS styles */
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            background-color: #f5f5f5;
+        }
 
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
     <script>
-        /* Your existing JavaScript code here */
-
-        // Function to update the weather effect
-        function updateWeatherEffect(weatherCode) {
-            const weatherEffects = document.querySelectorAll('.weather-effect');
-            weatherEffects.forEach((el) => {
-                el.style.opacity = 0;
-            });
-
-            const currentEffect = document.querySelector(`#weather-effect-${weatherCode}`);
-            if (currentEffect) {
-                currentEffect.style.opacity = 1;
+        function handleUnitSelection(unit) {
+            const customInput = document.getElementById("custom_input");
+            if (unit === "Custom") {
+                customInput.style.display = "block";
+            } else {
+                customInput.style.display = "none";
             }
         }
 
-        // Fetch weather data and update weather effects
-        async function fetchWeatherData() {
-            try {
-                const response = await fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/aliso%20viejo?unitGroup=metric&key=ME6T3CTE75LKGDQLSZT2ECBLJ&contentType=json");
-                const data = await response.json();
-
-                const currentWeatherCode = data.days[0].icon;
-                updateWeatherEffect(currentWeatherCode);
-            } catch (error) {
-                console.log("Error fetching weather data:", error);
+        function handleTargetUnitSelection(unit) {
+            const customTargetInput = document.getElementById("custom_target_input");
+            if (unit === "Custom") {
+                customTargetInput.style.display = "block";
+            } else {
+                customTargetInput.style.display = "none";
             }
         }
 
-        // Execute the fetchWeatherData function on page load
-        window.addEventListener("DOMContentLoaded", fetchWeatherData);
+        function convertTemperature() {
+            const value = parseFloat(document.getElementById("value").value);
+            const fromUnit = document.getElementById("from_unit").value;
+            const toUnit = document.getElementById("to_unit").value;
+            let convertedValue;
+
+            if (fromUnit === "Kelvin" && toUnit === "Kelvin") {
+                // No conversion needed, keep the value the same
+                convertedValue = value;
+            } else {
+                // Perform the conversion based on the selected units
+                // Add your conversion logic here
+                // ...
+            }
+
+            // Display the converted value
+            document.getElementById("converted_value").textContent = convertedValue;
+
+            // Update weather effects based on the converted value
+            updateWeatherEffects(convertedValue);
+        }
+
+        function updateWeatherEffects(convertedValue) {
+            const body = document.body;
+            body.classList.remove("sunny-effect", "cloudy-effect", "rainy-effect", "snowy-effect");
+
+            if (convertedValue >= 30) {
+                body.classList.add("sunny-effect");
+            } else if (convertedValue >= 20) {
+                body.classList.add("cloudy-effect");
+            } else if (convertedValue >= 10) {
+                body.classList.add("rainy-effect");
+            } else {
+                body.classList.add("snowy-effect");
+            }
+        }
+        
+        // Function to fetch weather information from the API and update weather effects
+        function fetchWeather() {
+            fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/aliso%20viejo?unitGroup=metric&key=ME6T3CTE75LKGDQLSZT2ECBLJ&contentType=json")
+                .then(response => response.json())
+                .then(data => {
+                    // Extract weather condition code or icon from the response
+                    const weatherCode = data.days[0].conditions;
+
+                    // Update weather effects based on the weather code
+                    updateWeatherCode(weatherCode);
+                })
+                .catch(error => {
+                    console.error("Error fetching weather data:", error);
+                });
+        }
+
+        // Function to update weather effects based on the weather condition code
+        function updateWeatherCode(weatherCode) {
+            const body = document.body;
+            body.classList.remove("sunny-effect", "cloudy-effect", "rainy-effect", "snowy-effect");
+
+            // Determine the weather effect based on the weather code
+            let weatherEffect;
+
+            if (weatherCode === "sunny" || weatherCode === "clear") {
+                weatherEffect = "sunny-effect";
+            } else if (weatherCode === "cloudy") {
+                weatherEffect = "cloudy-effect";
+            } else if (weatherCode === "rainy") {
+                weatherEffect = "rainy-effect";
+            } else if (weatherCode === "snowy") {
+                weatherEffect = "snowy-effect";
+            }
+
+            // Apply the weather effect to the body
+            body.classList.add(weatherEffect);
+        }
+
+        // Fetch weather information and update weather effects when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchWeather();
+        });
     </script>
 </head>
 <body>
-    <!-- Weather effects -->
-    <div class="weather-effect sunny-effect" id="weather-effect-clear"></div>
-    <div class="weather-effect cloudy-effect" id="weather-effect-partly-cloudy"></div>
-    <div class="weather-effect rainy-effect" id="weather-effect-rain"></div>
-    <div class="weather-effect snowy-effect" id="weather-effect-snow"></div>
-
     <h1>Temperature Converter</h1>
     <form action="/convert" method="POST">
-        <!-- Your existing form elements here -->
-
-        <!-- Update the weather effect on unit selection -->
-        <script>
-            document.getElementById("from_unit").addEventListener
+        <label for="value">Enter the numerical value:</label>
+        <input type="text" name="value" id="value" required>
+        <br>
+        <label for="from_unit">Select the input unit of measure:</label>
+        <select name="from_unit" id="from_unit" onchange="handleUnitSelection(this.value)" required>
+            <option value="">- Select Unit -</option>
+            <option value="Fahrenheit">Fahrenheit</option>
+            <option value="Kelvin">Kelvin</option>
+            <option value="Celsius">Celsius</option>
+            <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
+        </select>
+        <div id="custom_input" style="display: none;">
+            <label for="custom_unit">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_unit" id="custom_unit">
+        </div>
+        <br>
+        <label for="to_unit">Select the target unit of measure:</label>
+        <select name="to_unit" id="to_unit" onchange="handleTargetUnitSelection(this.value)" required>
+            <option value="">- Select Unit -</option>
+            <option value="Fahrenheit">Fahrenheit</option>
+            <option value="Kelvin">Kelvin</option>
+            <option value="Celsius">Celsius</option>
+            <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
+        </select>
+        <div id="custom_target_input" style="display: none;">
+            <label for="custom_target_unit">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_target_unit" id="custom_target_unit">
+        </div>
+        <br>
+        <label for="student_response">Enter the student's numeric response:</label>
+        <input type="text" name="student_response" id="student_response" required>
+        <br>
+        <input type="submit" value="Convert" onclick="convertTemperature()">
+    </form>
+    <div id="result">
+        <h2>Conversion Result</h2>
+        <p>Converted Value: <span id="converted_value"></span></p>
+    </div>
+</body>
+</html>
