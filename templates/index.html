@@ -7,51 +7,24 @@
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
             padding: 20px;
-            transition: background-color 0.5s;
         }
-
-        .sunny {
-            background-color: #FED55D;
-        }
-
-        .cloudy {
-            background-color: #D4D4D4;
-        }
-
-        .rainy {
-            background-color: #7DB9DE;
-        }
-
-        .snowy {
-            background-color: #FFFFFF;
-        }
-
         h1 {
             text-align: center;
             margin-top: 50px;
-            color: #4CAF50;
+            color: #333;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            transition: color 0.3s;
         }
-
-        h1:hover {
-            color: #45a049;
-        }
-
         form {
             max-width: 400px;
             margin: 0 auto;
             text-align: center;
             margin-top: 30px;
         }
-
         label {
             display: block;
             margin-bottom: 10px;
             color: #666;
-            transition: color 0.3s;
         }
-
         input[type="text"],
         select {
             width: 100%;
@@ -63,14 +36,12 @@
             transition: box-shadow 0.3s, background-color 0.3s;
             background-color: #fff;
         }
-
         input[type="text"]:focus,
         select:focus {
             outline: none;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
             background-color: #f5f5f5;
         }
-
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
@@ -81,118 +52,68 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-
-        #weather_icon {
-            display: block;
-            margin: 0 auto;
-            width: 100px;
-            height: 100px;
-        }
     </style>
     <script>
-        function updateConvertedValue() {
-            const value = parseFloat(document.getElementById("value").value);
-            const fromUnit = document.getElementById("from_unit").value;
-            const toUnit = document.getElementById("to_unit").value;
-
-            let convertedValue;
-
-            if (fromUnit === "Kelvin" && toUnit === "Kelvin") {
-                convertedValue = value;
-                displayConvertedValue(convertedValue);
+        function handleUnitSelection(unit) {
+            const customInput = document.getElementById("custom_input");
+            if (unit === "Custom") {
+                customInput.style.display = "block";
             } else {
-                // Make an API request to fetch the weather data
-                fetchWeatherData(value, fromUnit, toUnit)
-                    .then(data => {
-                        // Extract the converted value from the API response
-                        convertedValue = data.converted_value;
-
-                        // Display the converted value
-                        displayConvertedValue(convertedValue);
-                    })
-                    .catch(error => {
-                        console.log("Error:", error);
-                    });
+                customInput.style.display = "none";
             }
         }
 
-        function fetchWeatherData(value, fromUnit, toUnit) {
-            const apiKey = "ME6T3CTE75LKGDQLSZT2ECBLJ";
-            const apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/aliso%20viejo?unitGroup=metric&key=${apiKey}&contentType=json`;
-
-            // Make the API request
-            return fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Extract the weather condition or icon from the API response
-                    const weatherCode = data.weatherCode;
-                    const weatherIcon = getWeatherIconUrl(weatherCode);
-
-                    // Update the HTML with the weather icon
-                    const weatherIconElement = document.getElementById("weather_icon");
-                    weatherIconElement.src = weatherIcon;
-
-                    // Perform the conversion using the provided conversion logic
-                    const converter = new UnitConverter();
-                    convertedValue = converter.convert_temperature(value, fromUnit, toUnit);
-
-                    // Return the converted value
-                    return { converted_value: convertedValue };
-                })
-                .catch(error => {
-                    console.log("Error:", error);
-                });
-        }
-
-        function getWeatherIconUrl(weatherCode) {
-            // Define a mapping between weather codes and icon URLs
-            const weatherIconUrls = {
-                // Add mappings for different weather conditions
-            };
-
-            // Return the corresponding icon URL based on the weather code
-            return weatherIconUrls[weatherCode];
-        }
-
-        function displayConvertedValue(convertedValue) {
-            document.getElementById("converted_value").textContent = convertedValue;
+        function handleTargetUnitSelection(unit) {
+            const customTargetInput = document.getElementById("custom_target_input");
+            if (unit === "Custom") {
+                customTargetInput.style.display = "block";
+            } else {
+                customTargetInput.style.display = "none";
+            }
         }
     </script>
 </head>
 <body>
-    <h1>Temperature Converter</h1>
-    <form>
-        <label for="value">Enter the numerical value:</label>
+    <h1 style="color: #4CAF50;">Temperature Converter</h1>
+    <form action="/convert" method="POST">
+        <label for="value" style="color: #333;">Enter the numerical value:</label>
         <input type="text" name="value" id="value" required>
         <br>
-        <label for="from_unit">Select the input unit of measure:</label>
-        <select name="from_unit" id="from_unit" required>
+        <label for="from_unit" style="color: #333;">Select the input unit of measure:</label>
+        <select name="from_unit" id="from_unit" onchange="handleUnitSelection(this.value)" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
             <option value="Kelvin">Kelvin</option>
             <option value="Celsius">Celsius</option>
             <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
         </select>
+        <div id="custom_input" style="display: none;">
+            <label for="custom_unit" style="color: #333;">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_unit" id="custom_unit">
+        </div>
         <br>
-        <label for="to_unit">Select the target unit of measure:</label>
-        <select name="to_unit" id="to_unit" required>
+        <label for="to_unit" style="color: #333;">Select the target unit of measure:</label>
+        <select name="to_unit" id="to_unit" onchange="handleTargetUnitSelection(this.value)" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
             <option value="Kelvin">Kelvin</option>
             <option value="Celsius">Celsius</option>
             <option value="Rankine">Rankine</option>
+            <option value="Custom">Custom</option>
         </select>
+        <div id="custom_target_input" style="display: none;">
+            <label for="custom_target_unit" style="color: #333;">Enter a custom unit of measure:</label>
+            <input type="text" name="custom_target_unit" id="custom_target_unit">
+        </div>
         <br>
-        <input type="button" value="Convert" onclick="updateConvertedValue()">
+        <label for="student_response" style="color: #333;">Enter the student's numeric response:</label>
+        <input type="text" name="student_response" id="student_response" required>
+        <br>
+        <input type="submit" value="Convert">
     </form>
-    <div id="result">
-        <h2>Conversion Result</h2>
-        <p>Converted Value: <span id="converted_value"></span></p>
-    </div>
-    <img id="weather_icon" src="" alt="Weather Icon">
 </body>
 </html>
