@@ -3,7 +3,6 @@
 <head>
     <title>Temperature Converter</title>
     <style>
-        /* Your existing CSS styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -11,35 +10,32 @@
             transition: background-color 0.5s;
         }
 
-        /* Weather effects styles */
-        .weather-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s;
-            z-index: -1;
-            background-size: cover;
-            background-position: center;
+        .sunny {
+            background-color: #FED55D;
         }
 
-        .sunny-effect {
-            background-image: url(path/to/sunny.jpg);
+        .cloudy {
+            background-color: #D4D4D4;
         }
 
-        .cloudy-effect {
-            background-image: url(path/to/cloudy.jpg);
+        .rainy {
+            background-color: #7DB9DE;
         }
 
-        .rainy-effect {
-            background-image: url(path/to/rainy.jpg);
+        .snowy {
+            background-color: #FFFFFF;
         }
 
-        .snowy-effect {
-            background-image: url(path/to/snowy.jpg);
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #4CAF50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: color 0.3s;
+        }
+
+        h1:hover {
+            color: #45a049;
         }
 
         form {
@@ -89,149 +85,114 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
+        #weather_icon {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+        }
     </style>
     <script>
-        function handleUnitSelection(unit) {
-            const customInput = document.getElementById("custom_input");
-            if (unit === "Custom") {
-                customInput.style.display = "block";
-            } else {
-                customInput.style.display = "none";
-            }
-        }
-
-        function handleTargetUnitSelection(unit) {
-            const customTargetInput = document.getElementById("custom_target_input");
-            if (unit === "Custom") {
-                customTargetInput.style.display = "block";
-            } else {
-                customTargetInput.style.display = "none";
-            }
-        }
-
-        function convertTemperature() {
+        function updateConvertedValue() {
             const value = parseFloat(document.getElementById("value").value);
             const fromUnit = document.getElementById("from_unit").value;
             const toUnit = document.getElementById("to_unit").value;
+
             let convertedValue;
 
             if (fromUnit === "Kelvin" && toUnit === "Kelvin") {
-                // No conversion needed, keep the value the same
                 convertedValue = value;
+                displayConvertedValue(convertedValue);
             } else {
-                // Perform the conversion based on the selected units
-                // Add your conversion logic here
-                // ...
-            }
+                // Make an API request to fetch the weather data
+                fetchWeatherData(value, fromUnit, toUnit)
+                    .then(data => {
+                        // Extract the converted value from the API response
+                        convertedValue = data.converted_value;
 
-            // Display the converted value
-            document.getElementById("converted_value").textContent = convertedValue;
-
-            // Update weather effects based on the converted value
-            updateWeatherEffects(convertedValue);
-        }
-
-        function updateWeatherEffects(convertedValue) {
-            const body = document.body;
-            body.classList.remove("sunny-effect", "cloudy-effect", "rainy-effect", "snowy-effect");
-
-            if (convertedValue >= 30) {
-                body.classList.add("sunny-effect");
-            } else if (convertedValue >= 20) {
-                body.classList.add("cloudy-effect");
-            } else if (convertedValue >= 10) {
-                body.classList.add("rainy-effect");
-            } else {
-                body.classList.add("snowy-effect");
+                        // Display the converted value
+                        displayConvertedValue(convertedValue);
+                    })
+                    .catch(error => {
+                        console.log("Error:", error);
+                    });
             }
         }
-        
-        // Function to fetch weather information from the API and update weather effects
-        function fetchWeather() {
-            fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/aliso%20viejo?unitGroup=metric&key=ME6T3CTE75LKGDQLSZT2ECBLJ&contentType=json")
+
+        function fetchWeatherData(value, fromUnit, toUnit) {
+            const apiKey = "ME6T3CTE75LKGDQLSZT2ECBLJ";
+            const apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/aliso%20viejo?unitGroup=metric&key=${apiKey}&contentType=json`;
+
+            // Make the API request
+            return fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    // Extract weather condition code or icon from the response
-                    const weatherCode = data.days[0].conditions;
+                    // Extract the weather condition or icon from the API response
+                    const weatherCode = data.weatherCode;
+                    const weatherIcon = getWeatherIconUrl(weatherCode);
 
-                    // Update weather effects based on the weather code
-                    updateWeatherCode(weatherCode);
+                    // Update the HTML with the weather icon
+                    const weatherIconElement = document.getElementById("weather_icon");
+                    weatherIconElement.src = weatherIcon;
+
+                    // Perform the conversion using the provided conversion logic
+                    const converter = new UnitConverter();
+                    convertedValue = converter.convert_temperature(value, fromUnit, toUnit);
+
+                    // Return the converted value
+                    return { converted_value: convertedValue };
                 })
                 .catch(error => {
-                    console.error("Error fetching weather data:", error);
+                    console.log("Error:", error);
                 });
         }
 
-        // Function to update weather effects based on the weather condition code
-        function updateWeatherCode(weatherCode) {
-            const body = document.body;
-            body.classList.remove("sunny-effect", "cloudy-effect", "rainy-effect", "snowy-effect");
+        function getWeatherIconUrl(weatherCode) {
+            // Define a mapping between weather codes and icon URLs
+            const weatherIconUrls = {
+                // Add mappings for different weather conditions
+            };
 
-            // Determine the weather effect based on the weather code
-            let weatherEffect;
-
-            if (weatherCode === "sunny" || weatherCode === "clear") {
-                weatherEffect = "sunny-effect";
-            } else if (weatherCode === "cloudy") {
-                weatherEffect = "cloudy-effect";
-            } else if (weatherCode === "rainy") {
-                weatherEffect = "rainy-effect";
-            } else if (weatherCode === "snowy") {
-                weatherEffect = "snowy-effect";
-            }
-
-            // Apply the weather effect to the body
-            body.classList.add(weatherEffect);
+            // Return the corresponding icon URL based on the weather code
+            return weatherIconUrls[weatherCode];
         }
 
-        // Fetch weather information and update weather effects when the page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchWeather();
-        });
+        function displayConvertedValue(convertedValue) {
+            document.getElementById("converted_value").textContent = convertedValue;
+        }
     </script>
 </head>
 <body>
     <h1>Temperature Converter</h1>
-    <form action="/convert" method="POST">
+    <form>
         <label for="value">Enter the numerical value:</label>
         <input type="text" name="value" id="value" required>
         <br>
         <label for="from_unit">Select the input unit of measure:</label>
-        <select name="from_unit" id="from_unit" onchange="handleUnitSelection(this.value)" required>
+        <select name="from_unit" id="from_unit" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
             <option value="Kelvin">Kelvin</option>
             <option value="Celsius">Celsius</option>
             <option value="Rankine">Rankine</option>
-            <option value="Custom">Custom</option>
         </select>
-        <div id="custom_input" style="display: none;">
-            <label for="custom_unit">Enter a custom unit of measure:</label>
-            <input type="text" name="custom_unit" id="custom_unit">
-        </div>
         <br>
         <label for="to_unit">Select the target unit of measure:</label>
-        <select name="to_unit" id="to_unit" onchange="handleTargetUnitSelection(this.value)" required>
+        <select name="to_unit" id="to_unit" required>
             <option value="">- Select Unit -</option>
             <option value="Fahrenheit">Fahrenheit</option>
             <option value="Kelvin">Kelvin</option>
             <option value="Celsius">Celsius</option>
             <option value="Rankine">Rankine</option>
-            <option value="Custom">Custom</option>
         </select>
-        <div id="custom_target_input" style="display: none;">
-            <label for="custom_target_unit">Enter a custom unit of measure:</label>
-            <input type="text" name="custom_target_unit" id="custom_target_unit">
-        </div>
         <br>
-        <label for="student_response">Enter the student's numeric response:</label>
-        <input type="text" name="student_response" id="student_response" required>
-        <br>
-        <input type="submit" value="Convert" onclick="convertTemperature()">
+        <input type="button" value="Convert" onclick="updateConvertedValue()">
     </form>
     <div id="result">
         <h2>Conversion Result</h2>
         <p>Converted Value: <span id="converted_value"></span></p>
     </div>
+    <img id="weather_icon" src="" alt="Weather Icon">
 </body>
 </html>
